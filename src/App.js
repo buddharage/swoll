@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -9,7 +9,14 @@ const GET_SESSIONS = gql`
     sessions {
       _id
       date
-      activities
+      activities {
+        exerciseId
+        sets {
+          weight
+          reps
+          duration
+        }
+      }
     }
   }
 `;

@@ -53,13 +53,11 @@ class Session extends PureComponent {
   };
 
   render() {
-    const { session } = this.props.data;
-
-    console.log(this.props);
+    const { loading, session } = this.props.data;
 
     return (
       <SessionStyled>
-        {session && <SessionInfo session={session[0]} />}
+        {!loading && <SessionInfo session={session[0]} />}
         <Form onSubmit={this.handleSubmit}>
           <Button>Add Exercise</Button>
         </Form>

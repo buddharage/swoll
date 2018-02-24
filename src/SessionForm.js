@@ -29,10 +29,14 @@ class SessionForm extends PureComponent {
   };
 
   render() {
-    console.log('SessionForm', this.props);
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Form.Input label="Date" name="date" onChange={this.handleChange} />
+        <Form.Input
+          label="Date"
+          name="date"
+          value={new Date().toLocaleDateString()}
+          onChange={this.handleChange}
+        />
         <Button>Add Session</Button>
       </Form>
     );

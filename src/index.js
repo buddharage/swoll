@@ -14,6 +14,7 @@ import theme from './theme';
 import App from './App';
 import Session from './Session';
 import SessionList from './SessionList';
+import ExerciseList from './ExerciseList';
 import registerServiceWorker from './registerServiceWorker';
 
 const client = new ApolloClient({
@@ -28,6 +29,7 @@ ReactDOM.render(
         <App>
           <Route exact path="/" component={SessionList} />
           <Route path="/session/:id" component={Session} />
+          <Route path="/exercises" component={ExerciseList} />
         </App>
       </BrowserRouter>
     </ApolloProvider>

@@ -12,3 +12,20 @@ export const GET_EXERCISES = gql`
     }
   }
 `;
+
+export const GET_SESSIONS = gql`
+  query SessionsQuery {
+    sessions {
+      _id
+      date
+      activities {
+        exerciseId
+        sets {
+          weight
+          reps
+          duration
+        }
+      }
+    }
+  }
+`;

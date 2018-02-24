@@ -4,9 +4,22 @@ import gql from 'graphql-tag';
 
 import { Button, Form } from 'semantic-ui-react';
 
+import { GET_SESSIONS } from './queries';
+
 const ADD_SESSION = gql`
   mutation addSession($date: String!) {
     addSession(date: $date) {
+      _id
+      activities {
+        _id
+        exerciseId
+        sets {
+          _id
+          weight
+          reps
+          duration
+        }
+      }
       date
     }
   }
@@ -14,7 +27,7 @@ const ADD_SESSION = gql`
 
 class SessionForm extends PureComponent {
   state = {
-    date: ''
+    date: new Date().toLocaleDateString()
   };
 
   handleChange = (e, { name, value }) => {
@@ -34,7 +47,7 @@ class SessionForm extends PureComponent {
         <Form.Input
           label="Date"
           name="date"
-          value={new Date().toLocaleDateString()}
+          value={this.state.date}
           onChange={this.handleChange}
         />
         <Button>Add Session</Button>
@@ -44,6 +57,14 @@ class SessionForm extends PureComponent {
 }
 
 export default graphql(ADD_SESSION, {
+  options: {
+    update: (proxy, { data: { addSession } }) => {
+      const data = proxy.readQuery({ query: GET_SESSIONS });
+      data.sessions.push(addSession);
+
+      proxy.writeQuery({ query: GET_SESSIONS, data });
+    }
+  },
   props: ({ mutate }) => ({
     addSession: date => mutate({ variables: { date } })
   })

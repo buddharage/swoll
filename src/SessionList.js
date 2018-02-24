@@ -1,28 +1,12 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
 import { List } from 'semantic-ui-react';
 
 import SessionForm from './SessionForm';
 
-const GET_SESSIONS = gql`
-  query SessionsQuery {
-    sessions {
-      _id
-      date
-      activities {
-        exerciseId
-        sets {
-          weight
-          reps
-          duration
-        }
-      }
-    }
-  }
-`;
+import { GET_SESSIONS } from './queries';
 
 export default graphql(GET_SESSIONS)(props => {
   const { sessions = [] } = props.data;

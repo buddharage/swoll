@@ -1,29 +1,13 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 
-import './App.css';
+import styled from 'styled-components';
 
-const GET_SESSIONS = gql`
-  query SessionsQuery {
-    sessions {
-      _id
-      date
-      activities {
-        exerciseId
-        sets {
-          weight
-          reps
-          duration
-        }
-      }
-    }
-  }
+const StyledApp = styled.div`
+  padding: ${props => props.theme.padding};
 `;
 
 function App(props) {
-  console.log(props.data);
-  return <pre />;
+  return <StyledApp>{props.children}</StyledApp>;
 }
 
-export default graphql(GET_SESSIONS)(App);
+export default App;

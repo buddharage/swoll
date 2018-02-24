@@ -5,10 +5,15 @@ import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
+import { ThemeProvider } from 'styled-components';
+
+import 'semantic-ui-css/semantic.min.css';
+import theme from './theme';
 
 // App specific imports
-import './index.css';
 import App from './App';
+import Session from './Session';
+import SessionList from './SessionList';
 import registerServiceWorker from './registerServiceWorker';
 
 const client = new ApolloClient({
@@ -17,11 +22,16 @@ const client = new ApolloClient({
 });
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <BrowserRouter>
-      <Route path="/" component={App} />
-    </BrowserRouter>
-  </ApolloProvider>,
+  <ThemeProvider theme={theme}>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <App>
+          <Route exact path="/" component={SessionList} />
+          <Route path="/session/:id" component={Session} />
+        </App>
+      </BrowserRouter>
+    </ApolloProvider>
+  </ThemeProvider>,
   document.getElementById('root')
 );
 registerServiceWorker();

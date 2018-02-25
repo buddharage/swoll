@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
@@ -19,6 +19,10 @@ const GET_SESSION = gql`
         }
       }
     }
+    exercises {
+      _id
+      name
+    }
   }
 `;
 
@@ -36,9 +40,9 @@ function SessionInfo(props) {
   );
 }
 
-class Session extends PureComponent {
+class Session extends Component {
   state = {
-    date: ''
+    exerciseList: []
   };
 
   handleChange = (e, { name, value }) => {
@@ -52,13 +56,33 @@ class Session extends PureComponent {
     date && this.props.addSession(date) && this.setState({ date: '' });
   };
 
+  componentWillReceiveProps(nextProps, nextState) {
+    const { exercises } = nextProps.data;
+
+    if (!nextState.exerciseList && exercises && exercises.length) {
+      this.setState({
+        exerciseList: exercises.map(exercise => {
+          const { _id, name } = exercise;
+
+          return {
+            key: _id,
+            text: name,
+            value: name
+          };
+        })
+      });
+    }
+  }
+
   render() {
     const { loading, session } = this.props.data;
+    const { exerciseList } = this.state;
 
     return (
       <SessionStyled>
         {!loading && <SessionInfo session={session[0]} />}
         <Form onSubmit={this.handleSubmit}>
+          <Form.Select options={exerciseList} />
           <Button>Add Exercise</Button>
         </Form>
       </SessionStyled>
